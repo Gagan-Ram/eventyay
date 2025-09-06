@@ -137,6 +137,10 @@ _OURS_APPS = (
 
 INSTALLED_APPS = _LIBRARY_APPS + _OURS_APPS
 
+CORE_MODULES = INSTALLED_APPS + tuple(
+    module for module in talk_config.get("site", "core_modules").split(",") if module
+)
+
 _LIBRARY_MIDDLEWARES = (
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -692,7 +696,8 @@ COMPRESS_CSS_FILTERS = (
     'compressor.filters.cssmin.CSSCompressorFilter',
 )
 
-BASE_PATH = config.get('eventyay', 'base_path', fallback='/tickets')
+# BASE_PATH = config.get('eventyay', 'base_path', fallback='/tickets')
+BASE_PATH = ''
 TALK_BASE_PATH = config.get('eventyay', 'talk_base_path', fallback='/talks')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
