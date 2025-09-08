@@ -99,9 +99,7 @@ _LIBRARY_APPS = (
     'django_otp.plugins.otp_static',
     'django_celery_beat',
     'django.forms',
-    'rest_framework',
     'djangoformsetjs',
-    'django_filters',
     'django_pdb',
     'jquery',
     'rest_framework.authtoken',
@@ -120,18 +118,19 @@ if DEBUG and importlib.util.find_spec('debug_toolbar'):
     _LIBRARY_APPS += ('debug_toolbar',)
 
 _OURS_APPS = (
+    # agenda, orga and common must be on top to load contexts before forms gets initialized.
     'eventyay.agenda',
+    'eventyay.common',
+    'eventyay.orga',
     'eventyay.api',
     'eventyay.base',
     'eventyay.cfp',
-    'eventyay.common',
     'eventyay.control',
     'eventyay.event',
     'eventyay.eventyay_common',
     'eventyay.helpers',
     'eventyay.mail',
     'eventyay.multidomain',
-    'eventyay.orga',
     "eventyay.person",
     'eventyay.presale',
     'eventyay.schedule',
@@ -162,8 +161,6 @@ if DEBUG and importlib.util.find_spec('debug_toolbar'):
 
 _OURS_MIDDLEWARES = (
     'eventyay.base.middleware.CustomCommonMiddleware',
-    'eventyay.base.middleware.LocaleMiddleware',
-    'eventyay.base.middleware.SecurityMiddleware',
     'eventyay.common.middleware.SessionMiddleware',  # Add session handling
     'eventyay.common.middleware.MultiDomainMiddleware',  # Check which host is used and if it is valid
     'eventyay.common.middleware.EventPermissionMiddleware',  # Sets locales, request.event, available events, etc.
@@ -182,11 +179,11 @@ _OURS_MIDDLEWARES = (
 
 MIDDLEWARE = _LIBRARY_MIDDLEWARES + _OURS_MIDDLEWARES
 
-CORE_MODULES = {
-    'eventyay.base',
-    'eventyay.presale',
-    'eventyay.control',
-}
+# CORE_MODULES = {
+#     'eventyay.base',
+#     'eventyay.presale',
+#     'eventyay.control',
+# }
 
 template_loaders = (
     'django.template.loaders.filesystem.Loader',
@@ -212,10 +209,6 @@ TEMPLATES = (
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
                 'eventyay.config.settings.instance_name',
                 "eventyay.agenda.context_processors.is_html_export",
                 "eventyay.common.context_processors.add_events",
@@ -227,7 +220,6 @@ TEMPLATES = (
                 'eventyay.control.context.contextprocessor',
                 'eventyay.presale.context.contextprocessor',
                 'eventyay.eventyay_common.context.contextprocessor',
-                'django.template.context_processors.request',
             ],
             'loaders': template_loaders,
         },
